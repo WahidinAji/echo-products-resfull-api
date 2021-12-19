@@ -36,8 +36,13 @@ func (d *Dependency) FindAll(ctx context.Context) ([]Product, error)  {
 		}
 		products = append(products, product)
 	}
-	if err := tx.Commit(); err != nil {
-		return nil, err
+	errCommit := tx.Commit()
+	if errCommit != nil {
+		err := tx.Rollback()
+		if err != nil {
+			return nil, err
+		}
+		return nil, errCommit
 	}
 	return products, nil
 }

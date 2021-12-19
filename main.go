@@ -15,7 +15,7 @@ import (
 )
 
 func init() {
-	if appName := os.Getenv("APP_NAME"); appName == ""{
+	if appName := os.Getenv("APP_NAME"); appName == "" {
 		log.Fatal("Please provide the ENVIRONMENT value of (APP_NAME) on the .env file")
 	}
 	if dbUser := os.Getenv("DB_USER"); dbUser == "" {
@@ -31,23 +31,23 @@ func init() {
 	log.Println("Passed the environment variable check")
 }
 
-func main()  {
+func main() {
 	user := os.Getenv("DB_USER")
 	pass := os.Getenv("DB_PASS")
 	name := os.Getenv("DB_NAME")
-	dsn := fmt.Sprintf("%s:%s@/%s?parseTime=true",user,pass,name)
-	db, err := sql.Open("mysql",dsn)
+	dsn := fmt.Sprintf("%s:%s@/%s?parseTime=true", user, pass, name)
+	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("during opening a postgres client:", errors.New("Invalid connection!!!"), err)
 	}
-	db.SetMaxIdleConns(10) //min 10 connection
-	db.SetMaxOpenConns(100) //max 100 connection
-	db.SetConnMaxIdleTime(5 * time.Minute) //if iin 5 minutes nothing happen? db will close the connection
+	db.SetMaxIdleConns(10)                  //min 10 connection
+	db.SetMaxOpenConns(100)                 //max 100 connection
+	db.SetConnMaxIdleTime(5 * time.Minute)  //if iin 5 minutes nothing happen? db will close the connection
 	db.SetConnMaxLifetime(60 * time.Minute) //after 60 minutes, the connection will create new connection
 	defer db.Close()
 
 	e := echo.New()
-	e.Server.ReadTimeout = time.Duration(2) * time.Minute //SERVER_READ_TIMEOUT_IN_MINUTE
+	e.Server.ReadTimeout = time.Duration(2) * time.Minute  //SERVER_READ_TIMEOUT_IN_MINUTE
 	e.Server.WriteTimeout = time.Duration(2) * time.Minute //SERVER_WRITE_TIMEOUT_IN_MINUTE
 
 	e.GET("/", func(c echo.Context) error {
@@ -56,11 +56,11 @@ func main()  {
 
 	//products
 	product := products.Dependency{DB: db}
-	e.GET("/products",product.GetAll)
+	e.GET("/products", product.GetAll)
 
 	//running server
 	server := new(http.Server)
 	server.Addr = ":8000"
-	e.Logger.Print(os.Getenv("APP_NAME"), " is running on http://localhost",server.Addr)
+	e.Logger.Print(os.Getenv("APP_NAME"), " is running on http://localhost", server.Addr)
 	e.Logger.Fatal(e.StartServer(server))
 }
