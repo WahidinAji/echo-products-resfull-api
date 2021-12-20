@@ -54,9 +54,16 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
+	//{
+	//	"name":"Aji",
+	//	"email":"aji@mail.com"
+	//}
 	//products
 	product := products.Dependency{DB: db}
 	e.GET("/products", product.GetAll)
+	api := e.Group("/api")
+	api.GET("/products",product.ProductsAll)
+	api.PUT("/products/:id",product.ProductUpdate)
 
 	//running server
 	server := new(http.Server)
