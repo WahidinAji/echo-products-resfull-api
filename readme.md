@@ -1,6 +1,7 @@
 # Sample Products Restfull API
 
-* Url 
+* Url
+    - `GET` Method             
 ```http request
 http://localhost:8000/products
 ```

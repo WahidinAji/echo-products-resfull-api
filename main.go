@@ -61,9 +61,12 @@ func main() {
 	//products
 	product := products.Dependency{DB: db}
 	e.GET("/products", product.GetAll)
+	e.GET("/products/:id", product.GetById)
+
+	//with no transaction process
 	api := e.Group("/api")
-	api.GET("/products",product.ProductsAll)
-	api.PUT("/products/:id",product.ProductUpdate)
+	api.GET("/products", product.ProductsAll)
+	api.PUT("/products/:id", product.ProductUpdate)
 
 	//running server
 	server := new(http.Server)
