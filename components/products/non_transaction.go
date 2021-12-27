@@ -2,6 +2,7 @@ package products
 
 import (
 	"context"
+	"fmt"
 	response "github.com/WahidinAji/web-response"
 	"github.com/labstack/echo/v4"
 	"net/http"
@@ -41,79 +42,30 @@ func (d *Dependency) ProductsAll(ctx echo.Context) error {
 
 //Update Data By id With No Transaction Process
 
-func (d *Dependency) RepoProductUpdate(ctx context.Context, id int) (Product, error) {
+func (d *Dependency) RepoProductUpdate(ctx context.Context, id int64) (Product, error) {
 	db, err := d.DB.Conn(ctx)
 	if err != nil {
 		return Product{}, err
 	}
 	defer db.Close()
-	stmt, err := db.PrepareContext(ctx,"SELECT id, name, stock, price FROM products WHERE id=?")
+	stmt, err := db.PrepareContext(ctx,"SELECT name, stock, price FROM products WHERE id=?")
 	if err != nil {
 		return Product{}, err
 	}
 	defer stmt.Close()
-	var name string
-	stmt.QueryRowContext(ctx, id).Scan(&name)
 	var product Product
-	product.Name = name
+	product.ID = int(id)
+	product.Name = "Product One Update"
+	product.Stock = 14
+	product.Price = 15000.88
+	sql := "update products SET name=?, stock=?,price=? where id=?"
+	fmt.Println(id)
+	res, err := d.DB.ExecContext(ctx, sql, &product.Name,&product.Stock,&product.Price, id)
+	if err != nil {
+		return Product{}, err
+	}
+	fmt.Println(res)
 	return product, nil
-
-	//var product Product
-	//rows, err := stmt.QueryContext(ctx,id)
-	//if err != nil {
-	//	return Product{}, nil
-	//}
-	//for rows.Next(){
-	//	var p Product
-	//	err = rows.Scan(&p.ID, &p.Name,&p.Stock,&p.Price)
-	//	if err != nil {
-	//		return Product{}, nil
-	//	}
-	//	product.ID = p.ID
-	//	product.Name = "update"
-	//	product.Stock = p.Stock
-	//	product.Price = p.Price
-	//	stmt.Query("SET name =?",product.Name)
-	//}
-	//return product, nil
-
-
-
-	//product.Name
-
-
-	//fmt.Println(rows)
-	//defer rows.Close()
-	//
-	////var product Product
-	////product.Name = "Update"
-	////err = rows.Scan(&product.Name,&product.Stock,&product.Price)
-	////if err != nil {
-	////	return Product{}, nil
-	////}
-	////
-	//////for rows.Next(){
-	//////	var p Product
-	//////	rows.Scan(&p.Name,&p.Stock,&p.Price)
-	//////	product.Name = p.Name
-	//////	product.Stock = p.Stock
-	//////	product.Price = p.Price
-	//////}
-	//
-	//var product []Product
-	//for rows.Next(){
-	//	var p Product
-	//	p.Name = "update"
-	//	err := rows.Scan(&p.ID,&p.Name,&p.Stock,&p.Price)
-	//	if err != nil {
-	//		log.Fatal(err)
-	//	}
-	//	product = append(product, p)
-	//}
-	//if err = rows.Err(); err != nil {
-	//	return nil, err
-	//}
-	//return product, nil
 }
 
 func (d *Dependency) ProductUpdate(ctx echo.Context) error {
@@ -121,9 +73,17 @@ func (d *Dependency) ProductUpdate(ctx echo.Context) error {
 	if err != nil {
 		return err
 	}
-	data, err := d.RepoProductUpdate(ctx.Request().Context(),productId)
+	data, err := d.RepoProductUpdate(ctx.Request().Context(), int64(productId))
 	if err != nil {
 		return err
 	}
 	return ctx.JSON(http.StatusOK, response.WebResponse(http.StatusOK, "OK with no transaction process updated success !!",data))
 }
+
+/**
+Tebet jakarta Invesnit bisnis sinergi
+-
+
+Panorama Central Wisata, Jabar perbatasan Jakpus/Jakbar
+-
+ */
