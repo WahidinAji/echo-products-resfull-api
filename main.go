@@ -62,6 +62,7 @@ func main() {
 	product := products.Dependency{DB: db}
 	e.GET("/products", product.GetAll)
 	e.GET("/products/:id", product.GetById)
+	e.PATCH("/products/:id", product.UpdateById)
 
 	//with no transaction process
 	api := e.Group("/api")

@@ -1,5 +1,7 @@
 # Sample Products Restfull API
 
+## Get All
+
 * Url
     - `GET` Method             
 ```http request
@@ -28,6 +30,66 @@ body response
     "price": 25000.03
   }
 ]
+```
+
+## Get By Id
+* Url
+  - `GET` Method
+```http request
+http://localhost:8000/products/3
+```
+
+body response
+
+ - data found
+```json
+{
+  "code": 200,
+  "status": "OK",
+  "data": {
+    "id": 3,
+    "name": "Product Three",
+    "stock": 25,
+    "price": 25000.03
+  }
+}
+```
+  - data not found
+```json
+{
+  "code": 200,
+  "status": "OK",
+  "data": null
+}
+```
+
+## Update by id
+* Url
+  - `PATCH` Method
+```http request
+http://localhost:8000/products/3
+```
+
+body request
+```json
+{
+    "name": "update 3",
+    "stock":1002,
+    "price":10.99
+}
+```
+body response
+```json
+{
+  "code": 200,
+  "status": "OK",
+  "data": {
+    "id": 3,
+    "name": "update 3",
+    "stock": 1002,
+    "price": 10.99
+  }
+}
 ```
 
 

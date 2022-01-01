@@ -2,6 +2,13 @@ package products
 
 import "database/sql"
 
+type ProductDomain struct {
+	ID    int
+	Name  string
+	Stock int
+	Price float32
+}
+
 type Product struct {
 	ID    int     `json:"id"`
 	Name  string  `json:"name"`
