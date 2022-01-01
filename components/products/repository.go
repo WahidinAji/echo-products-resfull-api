@@ -102,13 +102,28 @@ func (d *Dependency) Update(ctx context.Context, postId int, product Product) (*
 	if err != nil {
 		return nil, err
 	}
-	_, execErr := tx.ExecContext(ctx, "UPDATE products SET name=?, stock=?, price=? WHERE id=?", &product.Name, &product.Stock, &product.Price, postId)
+	res, execErr := tx.ExecContext(ctx, "UPDATE products SET name=?, stock=?, price=? WHERE id=?", &product.Name, &product.Stock, &product.Price, postId)
 	if execErr != nil {
 		err := tx.Rollback()
 		if err != nil {
 			return nil, err
 		}
 		return nil, execErr
+	}
+	row, errRow := res.RowsAffected()
+	if errRow != nil {
+		errRoll := tx.Rollback()
+		if errRoll != nil {
+			return nil, errRoll
+		}
+		return nil, errRow
+	}
+	if row == 0 {
+		errRoll := tx.Rollback()
+		if errRoll != nil {
+			return nil, errRoll
+		}
+		return nil, nil
 	}
 
 	product.ID = postId

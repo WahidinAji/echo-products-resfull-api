@@ -40,5 +40,8 @@ func (d *Dependency) UpdateById(ctx echo.Context) error {
 	if err != nil {
 		return err
 	}
+	if row == nil {
+		return ctx.JSON(http.StatusNotFound, response.WebResponse(http.StatusNotFound, "Not Found", "ID doesn't exist!!"))
+	}
 	return ctx.JSON(http.StatusOK, response.WebResponse(http.StatusOK, "OK", row))
 }
