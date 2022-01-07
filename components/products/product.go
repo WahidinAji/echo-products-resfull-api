@@ -1,6 +1,9 @@
 package products
 
-import "database/sql"
+import (
+	"database/sql"
+	"github.com/go-playground/validator/v10"
+)
 
 type ProductDomain struct {
 	ID    int
@@ -10,10 +13,14 @@ type ProductDomain struct {
 }
 
 type Product struct {
-	ID    int     `json:"id"`
-	Name  string  `json:"name"`
-	Stock int     `json:"stock"`
-	Price float32 `json:"price"`
+	ID    int     `json:"id" query:"id"`
+	Name  string  `json:"name" validate:"required"`
+	Stock int     `json:"stock" validate:"required"`
+	Price float32 `json:"price" validate:"required"`
+}
+
+type CustomValidator struct {
+	Validator *validator.Validate
 }
 
 type MsgDel struct {

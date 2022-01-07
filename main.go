@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/go-playground/validator/v10"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/labstack/echo/v4"
@@ -50,6 +51,7 @@ func main() {
 	e.Server.ReadTimeout = time.Duration(2) * time.Minute  //SERVER_READ_TIMEOUT_IN_MINUTE
 	e.Server.WriteTimeout = time.Duration(2) * time.Minute //SERVER_WRITE_TIMEOUT_IN_MINUTE
 
+	e.Validator = &products.CustomValidator{Validator: validator.New()}
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
