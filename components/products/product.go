@@ -16,6 +16,11 @@ type Product struct {
 	Price float32 `json:"price"`
 }
 
+type MsgDel struct {
+	Code int
+	Status string
+}
+
 /** Inject Instance DB into Dependency*/
 type Dependency struct {
 	DB *sql.DB

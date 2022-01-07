@@ -63,6 +63,8 @@ func main() {
 	e.GET("/products", product.GetAll)
 	e.GET("/products/:id", product.GetById)
 	e.PATCH("/products/:id", product.UpdateById)
+	e.DELETE("/products/:id", product.DeleteById)
+	e.POST("/products", product.CreateOne)
 
 	//with no transaction process
 	api := e.Group("/api")
