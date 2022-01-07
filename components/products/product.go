@@ -17,11 +17,12 @@ type Product struct {
 }
 
 type MsgDel struct {
-	Code int
+	Code   int
 	Status string
 }
 
 /** Inject Instance DB into Dependency*/
+
 type Dependency struct {
 	DB *sql.DB
 }
