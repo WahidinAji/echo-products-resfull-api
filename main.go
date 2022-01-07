@@ -61,10 +61,10 @@ func main() {
 	//products
 	product := products.Dependency{DB: db}
 	e.GET("/products", product.GetAll)
+	e.POST("/products", product.CreateOne)
 	e.GET("/products/:id", product.GetById)
 	e.PATCH("/products/:id", product.UpdateById)
 	e.DELETE("/products/:id", product.DeleteById)
-	e.POST("/products", product.CreateOne)
 
 	//with no transaction process
 	api := e.Group("/api")
