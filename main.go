@@ -35,6 +35,10 @@ func init() {
 	log.Println("Passed the environment variable check")
 }
 
+func init() {
+
+}
+
 func main() {
 	/**Using MySql and Sql*/
 	user := os.Getenv("DB_USER")
@@ -52,7 +56,7 @@ func main() {
 	defer db.Close()
 
 	/**Using PostgresSql and Sqlx*/
-	dbSqlx, errSqlx := sqlx.Open("postgres","user=postgres dbname=users password=postgres sslmode=disable")
+	dbSqlx, errSqlx := sqlx.Open("postgres", "user=postgres dbname=users password=postgres sslmode=disable")
 	if errSqlx != nil {
 		log.Fatal("during opening a postgres client:", errors.New("Invalid connection!!!"), errSqlx)
 	}
@@ -90,7 +94,9 @@ func main() {
 
 	//users using sqlx and pgsql
 	users := pgsql_db.UserDependency{DB: dbSqlx}
-	api.GET("/users",users.GetAll)
+	api.GET("/users", users.GetAll)
+	api.GET("/users/:id", users.GetById)
+	api.PATCH("/users/:id", users.UpdateById)
 
 	//running server
 	server := new(http.Server)
