@@ -97,6 +97,8 @@ func main() {
 	api.GET("/users", users.GetAll)
 	api.GET("/users/:id", users.GetById)
 	api.PATCH("/users/:id", users.UpdateById)
+	api.DELETE("/users/:id", users.DeleteById)
+	api.POST("/users", users.CreateOne)
 
 	//running server
 	server := new(http.Server)

@@ -11,8 +11,8 @@ type User struct {
 	ID          uuid.UUID `json:"id" query:"id"`
 	FirstName   string    `json:"first_name" query:"first_name" validate:"required"`
 	LastName    string    `json:"last_name" query:"last_name" validate:"required"`
-	Email       string    `json:"email" query:"email" validate:"required,email,unique"`
-	PhoneNumber int       `json:"phone_number" validate:"max=14"`
+	Email       string    `json:"email" query:"email" validate:"required,email"`
+	PhoneNumber int       `json:"phone_number"`
 }
 
 type UserDependency struct {
@@ -23,8 +23,14 @@ type UserValidator struct {
 	Validator *validator.Validate
 }
 
+type MsgDel struct {
+	Code   int
+	Status string
+}
+
 var (
 	ErrNotExists  = errors.New("user id was not found")
+	ErrExists     = errors.New("email was already exists")
 	ErrConnFailed = errors.New("connection failed")
 	ErrQuery      = errors.New("execute query error")
 	ErrBeginTx    = errors.New("begin transaction error")

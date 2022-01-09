@@ -52,7 +52,7 @@ func (d *Dependency) UpdateById(ctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	if err := ctx.Validate(product); err != nil {
+	if err = ctx.Validate(product); err != nil {
 		return ctx.JSON(http.StatusBadRequest, response.WebResponse(http.StatusBadRequest, "Bad Request", err.Error()))
 	}
 
