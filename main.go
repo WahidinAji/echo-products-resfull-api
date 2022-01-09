@@ -35,10 +35,6 @@ func init() {
 	log.Println("Passed the environment variable check")
 }
 
-func init() {
-
-}
-
 func main() {
 	/**Using MySql and Sql*/
 	user := os.Getenv("DB_USER")
